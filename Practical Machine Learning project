@@ -1,0 +1,17 @@
+# Practical machine learning project
+
+library(caret)
+library(Hmisc)
+
+
+# read training and testing data
+pmlTraining <- read.csv("pml-training.csv", stringsAsFactors = FALSE)
+pmlTesting <- read.csv("pml-testing.csv", stringsAsFactors = FALSE)
+
+
+trainFeatures <- pmlTraining[,7:159]
+testFeatures <- pmlTesting[,7:159]
+trainFeatures <- suppressWarnings(data.frame(sapply(trainFeatures, as.numeric)))
+testFeatures <- suppressWarnings(data.frame(sapply(testFeatures, as.numeric)))
+trainFeatures[is.na(trainFeatures)] <- 0  ## Change NA's to 0
+testFeatures[is.na(testFeatures)] <- 0  ## Change NA's to 0
