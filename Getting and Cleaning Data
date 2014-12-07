@@ -1,0 +1,55 @@
+# Quiz 1
+
+# Getting and Cleaning quiz 1
+# Q1: How many properties are worth $1,000,000 or more?
+data <- read.csv("getdata-data-ss06hid.csv")
+str(data)
+table(data$VAL)
+1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18 
+75  42  33  30  26  29  23  70  99 119 152 199 233 495 483 486 357 502 
+19  20  21  22  23  24 
+232 312 164 159  47  53 
+
+# Q3
+library(xlsx)
+rowIndex= 18:23
+colIndex= 7:15
+dat <- read.xlsx(file="DATA.xlsx", sheetIndex=1, rowIndex=rowIndex, colIndex=colIndex)
+
+sum(dat$Zip*dat$Ext,na.rm=T) 
+#36534720
+
+# Q4
+library(XML)
+library(RCurl)
+fileUrl <- "http://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml"
+doc <- xmlTreeParse(fileUrl, useInternal=TRUE)
+#rootNode <- xmlRoot(doc)
+#xmlName(rootNode)
+
+zipcode <- xpathSApply(doc, "//zipcode", xmlValue)
+length(zipcode[zipcode=="21231"])
+# or use summary(zipcode=="21231")
+
+# another solutoin is following
+# myurl <- download.file(url=fileUlr, destfile="restaurants.csv", mode="wb")
+# dataxls <-read.csv("restaurants.csv")
+
+
+# Q5 
+fileUrl <-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv "
+downloadfile <- download.file(url=fileUrl, destfile="microdata_survey.csv")
+
+data <- read.csv("getdata-data-ss06pid.csv")
+DT <-data
+# system.time(tapply(DT$pwgtp15,DT$SEX,mean))
+#    user  system elapsed 
+#   0.009   0.000   0.010 
+
+# system.time(sapply(split(DT$pwgtp15,DT$SEX),mean))
+#    user  system elapsed 
+#   0.004   0.000   0.004 
+
+# system.time(mean(DT[DT$SEX==1,]$pwgtp15))
+#   user  system elapsed 
+#   0.115   0.004   0.174 
